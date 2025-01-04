@@ -18,6 +18,7 @@ st.write("연도별 주차에 따른 Flu 감염 데이터를 시각화합니다.
 # Select a year
 years = flu_data["year"].unique()
 selected_year = st.selectbox("연도를 선택하세요", years)
+flu_data["year"] = flu_data["year"].replace({"2017-2018 절기": "2023-2024 절기"})
 
 # Filter data for the selected year
 year_data = flu_data[flu_data["year"] == selected_year].iloc[0, 1:]
