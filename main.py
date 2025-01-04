@@ -5,8 +5,16 @@ import matplotlib.pyplot as plt
 file_path = 'pertussis.csv'
 data = pd.read_csv(file_path, encoding='euc-kr')
 
-# 1주부터 52주 데이터만 추출
+# 열 이름 확인 및 정리
+data.columns = data.columns.str.strip()  # 공백 제거
 weeks = [f"{week}주" for week in range(1, 53)]
+
+# 열 이름이 예상과 같은지 확인
+missing_weeks = [week for week in weeks if week not in data.columns]
+if missing_weeks:
+    raise ValueError(f"다음 열이 데이터프레임에 없습니다: {missing_weeks}")
+
+# 1주부터 52주 데이터만 추출
 region_data = data.set_index('지역')[weeks]
 
 # 그래프 생성
