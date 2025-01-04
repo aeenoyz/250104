@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-
+import koreanize_matplotlib  
 # 한글 폰트 설정
 plt.rcParams['font.family'] = 'Malgun Gothic'  # 윈도우: 'Malgun Gothic', 맥: 'AppleGothic', 리눅스: 적합한 한글 폰트 지정
 plt.rcParams['axes.unicode_minus'] = False    # 마이너스 기호 깨짐 방지
