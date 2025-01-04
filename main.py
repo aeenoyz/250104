@@ -36,11 +36,11 @@ if sharp_increase_week:
     st.write(f"⚠️ 예방 접종 권장: {sharp_increase_week} 주에 독감 예방 백신을 맞으세요.")
 
 # Plot the line chart
-st.subheader(f"{selected_year} Flu 감염 추이")
+st.subheader(f"{selected_year} Flu Data Graph")
 plt.figure(figsize=(10, 6))
 plt.plot(weeks, values, marker='o')
-plt.title(f"{selected_year} Flu 감염 추이")
-plt.xlabel("주")
-plt.ylabel("감염 수")
+plt.title(f"{selected_year} Flu Data Graph")
+plt.xlabel("Week")
+plt.ylabel("Number of Patients")
 plt.xticks(rotation=45)
 st.pyplot(plt)
