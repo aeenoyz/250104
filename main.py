@@ -18,6 +18,14 @@ year_data = flu_data[flu_data["year"] == selected_year].iloc[0, 1:]
 weeks = year_data.index.tolist()
 values = year_data.values
 
+# Reorder weeks: 36~53주, 1~35주 순서 유지
+ordered_weeks = [f"week_{i}" for i in range(36, 54)] + [f"week_{i}" for i in range(1, 36)]
+chart_data = pd.DataFrame({
+    "Weeks": weeks,
+    "Values": values
+})
+chart_data = chart_data.set_index("Weeks").reindex(ordered_weeks)
+
 # Identify the week with a sharp increase
 sharp_increase_week = None
 for i in range(2, len(values)):
@@ -28,15 +36,6 @@ for i in range(2, len(values)):
 # Display vaccination recommendation
 if sharp_increase_week:
     st.write(f"⚠️ 예방 접종 권장: {sharp_increase_week} 주에 독감 예방 백신을 맞으세요.")
-
-# Create a DataFrame for Streamlit's line chart
-chart_data = pd.DataFrame({
-    "Weeks": weeks,
-    "Values": values
-})
-
-# Maintain the order of weeks as in the file
-chart_data = chart_data.set_index("Weeks")
 
 # Plot the line chart
 st.subheader(f"{selected_year} Flu 감염 추이")
