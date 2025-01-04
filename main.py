@@ -1,5 +1,11 @@
 import pandas as pd
 import streamlit as st
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+
+# 한글 폰트 설정
+plt.rcParams['font.family'] = 'Malgun Gothic'  # 윈도우: 'Malgun Gothic', 맥: 'AppleGothic', 리눅스: 적합한 한글 폰트 지정
+plt.rcParams['axes.unicode_minus'] = False    # 마이너스 기호 깨짐 방지
 
 # Load the processed data
 file_path = 'flu_data_processed.csv'
@@ -15,16 +21,8 @@ selected_year = st.selectbox("연도를 선택하세요", years)
 
 # Filter data for the selected year
 year_data = flu_data[flu_data["year"] == selected_year].iloc[0, 1:]
-weeks = year_data.index.tolist()
+weeks = year_data.index
 values = year_data.values
-
-# Reorder weeks: 36~53주, 1~35주 순서 유지
-ordered_weeks = [f"week_{i}" for i in range(36, 54)] + [f"week_{i}" for i in range(1, 36)]
-chart_data = pd.DataFrame({
-    "Weeks": weeks,
-    "Values": values
-})
-chart_data = chart_data.set_index("Weeks").reindex(ordered_weeks)
 
 # Identify the week with a sharp increase
 sharp_increase_week = None
@@ -39,4 +37,11 @@ if sharp_increase_week:
 
 # Plot the line chart
 st.subheader(f"{selected_year} Flu 감염 추이")
-st.line_chart(chart_data)
+plt.figure(figsize=(10, 6))
+plt.plot(weeks, values, marker='o')
+plt.title(f"{selected_year} Flu 감염 추이")
+plt.xlabel("주")
+plt.ylabel("감염 수")
+plt.xticks(rotation=45)
+plt.grid()
+st.pyplot(plt)
