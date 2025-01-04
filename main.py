@@ -15,7 +15,7 @@ selected_year = st.selectbox("연도를 선택하세요", years)
 
 # Filter data for the selected year
 year_data = flu_data[flu_data["year"] == selected_year].iloc[0, 1:]
-weeks = year_data.index
+weeks = year_data.index.tolist()
 values = year_data.values
 
 # Identify the week with a sharp increase
@@ -33,7 +33,10 @@ if sharp_increase_week:
 chart_data = pd.DataFrame({
     "Weeks": weeks,
     "Values": values
-}).set_index("Weeks")
+})
+
+# Maintain the order of weeks as in the file
+chart_data = chart_data.set_index("Weeks")
 
 # Plot the line chart
 st.subheader(f"{selected_year} Flu 감염 추이")
