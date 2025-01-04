@@ -1,9 +1,5 @@
 import pandas as pd
 import streamlit as st
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-
-
 
 # Load the processed data
 file_path = 'flu_data_processed.csv'
@@ -33,13 +29,12 @@ for i in range(2, len(values)):
 if sharp_increase_week:
     st.write(f"⚠️ 예방 접종 권장: {sharp_increase_week} 주에 독감 예방 백신을 맞으세요.")
 
+# Create a DataFrame for Streamlit's line chart
+chart_data = pd.DataFrame({
+    "Weeks": weeks,
+    "Values": values
+}).set_index("Weeks")
+
 # Plot the line chart
 st.subheader(f"{selected_year} Flu 감염 추이")
-plt.figure(figsize=(10, 6))
-plt.plot(weeks, values, marker='o')
-plt.title(f"{selected_year} Flu 감염 추이")
-plt.xlabel("주")
-plt.ylabel("감염 수")
-plt.xticks(rotation=45)
-plt.grid()
-st.pyplot(plt)
+st.line_chart(chart_data)
