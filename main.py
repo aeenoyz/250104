@@ -19,6 +19,17 @@ year_data = flu_data[flu_data["year"] == selected_year].iloc[0, 1:]
 weeks = year_data.index
 values = year_data.values
 
+# Identify the week with a sharp increase
+sharp_increase_week = None
+for i in range(2, len(values)):
+    if values[i] > values[i-1] * 1.5:  # Detect a 50% increase
+        sharp_increase_week = weeks[i-2]  # Recommend 2 weeks before the sharp increase
+        break
+
+# Display vaccination recommendation
+if sharp_increase_week:
+    st.write(f"⚠️ 예방 접종 권장: {sharp_increase_week} 주에 독감 예방 백신을 맞으세요.")
+
 # Plot the line chart
 st.subheader(f"{selected_year} Flu 감염 추이")
 plt.figure(figsize=(10, 6))
