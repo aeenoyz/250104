@@ -1,8 +1,7 @@
 import streamlit as st
-
 import pandas as pd
 import numpy as np
-import plotly.express as px
+import matplotlib.pyplot as plt
 
 # 감기 환자 수 데이터 생성
 np.random.seed(42)
@@ -17,22 +16,22 @@ st.set_page_config(page_title="Cold Cases Visualization", layout="wide")
 st.title("Daily Cold Cases Visualization")
 
 # 그래프 생성
-fig = px.line(data, x="Date", y="Cold Cases", title="Daily Changes in Cold Cases", 
-              labels={"Date": "Date", "Cold Cases": "Number of Cases"},
-              hover_data={"Cold Cases": True, "Date": False})
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot(data["Date"], data["Cold Cases"], marker='o', linestyle='-', linewidth=2)
+ax.set_title("Daily Changes in Cold Cases", fontsize=16)
+ax.set_xlabel("Date", fontsize=14)
+ax.set_ylabel("Number of Cases", fontsize=14)
+plt.xticks(rotation=45)
 
-# 그래프 스타일
-fig.update_traces(line=dict(width=3))
-fig.update_layout(
-    hovermode="x unified",
-    template="plotly_white",
-    title_font_size=24,
-    xaxis_title_font_size=18,
-    yaxis_title_font_size=18
-)
+# 마우스 오버와 유사한 데이터 표시
+hover_data = st.selectbox("Select a date to view details:", data["Date"].dt.strftime('%Y-%m-%d'))
+selected_data = data[data["Date"].dt.strftime('%Y-%m-%d') == hover_data]
+
+st.write(f"**Date**: {selected_data.iloc[0]['Date'].strftime('%Y-%m-%d')}  ")
+st.write(f"**Cold Cases**: {selected_data.iloc[0]['Cold Cases']}")
 
 # 그래프 표시
-st.plotly_chart(fig, use_container_width=True)
+st.pyplot(fig)
 
 # 데이터 표시 옵션
 if st.checkbox("Show Raw Data"):
